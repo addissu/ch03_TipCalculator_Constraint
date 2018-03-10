@@ -102,12 +102,18 @@ public class TipCalculatorActivity extends Activity
     public void onResume() {
         super.onResume();
 
+        rememberTipPercent = prefs.getBoolean("pref_forget_percent", true);
+        rounding = Integer.parseInt(prefs.getString("pref_rounding", "0"));
+
+
         // get the instance variables
         billAmountString = savedValues.getString("billAmountString", "");
         tipPercent = savedValues.getFloat("tipPercent", 0.15f);
 
         // set the bill amount on its widget
         billAmountEditText.setText(billAmountString);
+
+
 
         // calculate and display
         calculateAndDisplay();
@@ -127,10 +133,27 @@ public class TipCalculatorActivity extends Activity
         else {
             billAmount = Float.parseFloat(billAmountString);
         }
+        float tipAmount = 0;
+        float totalAmount = 0;
+        float tipPercentDisplay = 0;
+        if (rounding == ROUND_NONE){
+            tipAmount = billAmount * tipPercent;
+            totalAmount = billAmount + tipAmount;
+        }else if(rounding == ROUND_TIP){
+            tipAmount = StrictMath.round(billAmount*tipPercent);
+            totalAmount = billAmount+tipAmount;
+            tipPercentDisplay = tipAmount/billAmount;
+
+        }else if(rounding == ROUND_TOTAL){
+            float tipNotRounded = billAmount*tipPercent;
+            //tipPercentDisplay = tipAmount - billAmount;
+            tipAmount=tipNotRounded;
+            totalAmount=StrictMath.round(billAmount + tipNotRounded);
+        }
 
         // calculate tip and total 
-        float tipAmount = billAmount * tipPercent;
-        float totalAmount = billAmount + tipAmount;
+        //float tipAmount = billAmount * tipPercent;
+        //float totalAmount = billAmount + tipAmount;
 
         // display the other results with formatting
         NumberFormat currency = NumberFormat.getCurrencyInstance();

@@ -3,12 +3,12 @@
 
     <CheckBoxPreference
         android:defaultValue="false"
-        android:key="check_box_preference_1"
+        android:key="pref_forget_percent"
         android:title="Check box preference" />
     <ListPreference
         android:defaultValue="0"
         android:entries="@array/rounding_keys"
         android:entryValues="@array/rounding_values"
-        android:key="list_preference_1"
+        android:key="pref_rounding"
         android:title="List preference" />
 </PreferenceScreen>
